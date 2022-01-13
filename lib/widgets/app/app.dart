@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:very_good_weather/providers/weather_provider.dart';
+
+import '/constants/theme.dart';
+import '/providers/weather_provider.dart';
+import '/widgets/home/home.dart';
+import '/widgets/show_weather/show_weather.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -22,35 +26,25 @@ class AppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          brightness: Brightness.dark,
-          secondary: Colors.white,
-        ),
-        primaryColor: Colors.black,
-        scaffoldBackgroundColor: Colors.black,
-        dividerTheme: const DividerThemeData(
-          indent: 16,
-          space: 0,
-        ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            onPrimary: Colors.black,
+        debugShowCheckedModeBanner: false,
+        theme: vgwTheme,
+        home: Scaffold(
+          body: SafeArea(
+            child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment
+                      .bottomCenter, // 10% of the width, so there are ten blinds.
+                  colors: [Color(0xff1903A6), Color(0xff0C0058)],
+                )),
+                child: context.watch<WeatherProvider>().locationWeather == null
+                    ? const HomeScreen()
+                    : const ShowWeather()),
           ),
-        ),
-      ),
-      home: context.watch<WeatherProvider>().addedCities.isNotEmpty
-          ? Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.green,
-            )
-          : Container(
-              height: double.infinity,
-              width: double.infinity,
-              color: Colors.red),
-    );
+        ));
   }
 }

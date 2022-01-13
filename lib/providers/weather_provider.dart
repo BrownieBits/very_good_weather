@@ -2,17 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:weather_api/weather_api.dart';
 
 class WeatherProvider extends ChangeNotifier {
-  List<SearchResult> _addedCities = [];
+  String _searchTerm = '';
+  List<SearchResult> _searchResults = [];
+  final WeatherApiClient _weatherApiClient = WeatherApiClient();
+  LocationWeather? _locationWeather;
+  String _currentTempType = 'C';
 
-  List<SearchResult> get addedCities => _addedCities;
+  String get searchTerm => _searchTerm;
+  List<SearchResult> get searchResults => _searchResults;
+  LocationWeather? get locationWeather => _locationWeather;
+  String get currentTempType => _currentTempType;
 
-  void addCity(SearchResult newCity) {
-    _addedCities.add(newCity);
+  void updateSearchTerm(String newTerm) {
+    _searchTerm = newTerm;
+  }
+
+  void searchCities(String term) async {
+    if (term == '') {
+      _searchResults = [];
+    } else {
+      _searchResults = await _weatherApiClient.fetchByCity(term);
+    }
     notifyListeners();
   }
 
-  void setCities(List<SearchResult> newCities) {
-    _addedCities = newCities;
+  void updateLocationWeather(SearchResult newCity, String term) async {
+    _searchTerm = term;
+    _locationWeather =
+        await _weatherApiClient.fetchLocationWeather(newCity.woeID);
+    notifyListeners();
+  }
+
+  void clearLocation() {
+    _locationWeather = null;
+    notifyListeners();
+  }
+
+  void updateTempType() {
+    if (_currentTempType == 'C') {
+      _currentTempType = 'F';
+    } else {
+      _currentTempType = 'C';
+    }
     notifyListeners();
   }
 }

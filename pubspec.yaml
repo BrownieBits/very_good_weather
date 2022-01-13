@@ -11,6 +11,8 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   provider: ^6.0.2
+  flutter_svg: ^1.0.1
+  intl: ^0.17.0
   weather_api:
     path: packages/weather_api
 
@@ -22,6 +24,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-   assets:
-     - assets/images/*
-     - assets/images/weather_icons/*
+  assets:
+    - assets/images/
+    - assets/images/weather_icons/

@@ -34,7 +34,7 @@ class WeatherApiClient {
   /// Fetches search results by Name.
   /// REST call: 'GET /api/locationsearch/?query={City Name}
   Future<List<SearchResult>> fetchByCity(String term) async {
-    final uri = Uri.https(authority, '/api/location/search/?query=$term');
+    final uri = Uri.https(authority, '/api/location/search/', {'query': term});
     final responseBody = await _get(uri);
 
     try {
@@ -50,7 +50,8 @@ class WeatherApiClient {
   /// Fetches search results by Lat Long.
   /// REST call: 'GET /api/locationsearch/?lattlong={Lat,Long}
   Future<List<SearchResult>> fetchByLatLng(String term) async {
-    final uri = Uri.https(authority, '/api/location/search/?lattlong=$term');
+    final uri =
+        Uri.https(authority, '/api/location/search/', {'lattlong': term});
     final responseBody = await _get(uri);
 
     try {
@@ -77,7 +78,6 @@ class WeatherApiClient {
 
   Future<List<dynamic>> _get(Uri uri) async {
     http.Response response;
-
     try {
       response = await _httpClient.get(uri);
     } catch (_) {
