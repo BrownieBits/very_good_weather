@@ -13,10 +13,6 @@ class WeatherProvider extends ChangeNotifier {
   LocationWeather? get locationWeather => _locationWeather;
   String get currentTempType => _currentTempType;
 
-  void updateSearchTerm(String newTerm) {
-    _searchTerm = newTerm;
-  }
-
   void searchCities(String term) async {
     if (term == '') {
       _searchResults = [];
@@ -44,6 +40,16 @@ class WeatherProvider extends ChangeNotifier {
     } else {
       _currentTempType = 'C';
     }
+    notifyListeners();
+  }
+
+  void updateSearchResults(List<SearchResult> newResults) {
+    _searchResults = newResults;
+    notifyListeners();
+  }
+
+  void setLocationWeather(LocationWeather newLocation) {
+    _locationWeather = newLocation;
     notifyListeners();
   }
 }
